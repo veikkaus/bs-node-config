@@ -8,16 +8,22 @@ type t = {
 };
 
 module Util {
-  [@bs.deriving abstract]
-  type safeLoadOptions = {
-    schema: string,
-    json: bool,
+
+  module JsYamlBind {
+    type schema;
+
+    [@bs.deriving abstract]
+    type safeLoadOptions = {
+      schema: schema,
+      json: bool,
+    };
+    [@bs.val] [@bs.module "js-yaml"] external jsonSchema: schema = "JSON_SCHEMA";
+    [@bs.val] [@bs.module "js-yaml"] external safeLoad: (string, safeLoadOptions) => Js.Json.t = "safeLoad";
   };
-  [@bs.val] [@bs.module "js-yaml"] external safeLoad: (string, safeLoadOptions) => Js.Json.t = "safeLoad";
 
   let parseYaml: string => r(Js.Json.t) =
     rawStr =>
-      try (Ok(safeLoad(rawStr, safeLoadOptions(~schema="JSON_SCHEMA", ~json=true)))) {
+      try (Belt.Result.Ok(JsYamlBind.safeLoad(rawStr, JsYamlBind.safeLoadOptions(~schema=JsYamlBind.jsonSchema, ~json=false)))) {
         | error => Error(error)
       };
 
@@ -253,3 +259,9 @@ let fetch: string => parser('a) => t => option('a) =
 let fetchExn: string => parser('a) => t => 'a =
   (keyPath, parser, config) =>
     key(keyPath, config) |> parser |> Belt.Result.getExn;
+
+
+let parseBoolExn: t => bool = x => x |> parseBool |> getExn;
+let parseStringExn: t => string = x => x |> parseString |> getExn;
+let parseFloatExn: t => float = x => x |> parseFloat |> getExn;
+let parseIntExn: t => int = x => x |> parseInt |> getExn;

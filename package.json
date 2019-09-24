@@ -13,15 +13,17 @@
   ],
   "scripts": {
     "clean": "bsb -clean-world",
-    "build": "bsb -make-world"
+    "build": "bsb -make-world",
+    "test": "npm run clean && npm run build && mocha ./lib/js/test/"
   },
   "peerDependencies": {
     "bs-platform": ">= 5.0.0"
   },
   "dependencies": {
-    "js-yaml": "^3.13.1"
+    "js-yaml": "3.13.1"
   },
   "devDependencies": {
-    "bs-platform": "^5.0.6"
+    "bs-mocha": "1.0.0",
+    "bs-platform": "5.0.6"
   }
 }

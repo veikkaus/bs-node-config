@@ -1,0 +1,9 @@
+some:
+  interesting: value  # comments too should be ok
+  and: 123.45         # and not affect parsing
+  then: true
+
+other:
+- foo
+- barf
+- garh

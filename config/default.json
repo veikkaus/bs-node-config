@@ -1,0 +1,14 @@
+{
+  "server": {
+    "host": "dream.beam.com",
+    "port": 1234,
+    "deeper": {
+      "enabled": false
+    }
+  },
+  "other": [
+    "first",
+    "second",
+    "third"
+  ]
+}

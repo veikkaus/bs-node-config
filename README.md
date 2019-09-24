@@ -29,7 +29,7 @@ let myServerHost: string = config |> C.key("server.host") |> C.parseStringExn;
 let myList: list(string) = config |> C.key("listOfWords") |> C.parseList(C.parseString) |> C.getExn;
 
 /* This alternative style works too: */
-let myServerPort: int = C.(fetchExn("server.port", parseInt, Config.config));
+let myServerPort: int = C.(fetchExn("server.port", parseInt, config));
 ```
 
 # Config loading

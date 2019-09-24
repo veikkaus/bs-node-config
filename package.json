@@ -1,32 +1,27 @@
 {
   "name": "bs-node-config",
-  "version": "0.1.0",
+  "version": "0.0.1",
   "description": "Node dependent reasonml config library",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/seprich/bs-node-config.git"
-  },
+  "author": "Kundi team - Veikkaus",
+  "license": "MIT",
+  "repository": "github:veikkaus/bs-node-config",
   "keywords": [
     "config",
-    "BuckleScript"
+    "BuckleScript",
+    "Reason",
+    "nodejs"
   ],
-  "author": "Jussi Seppälä",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/seprich/bs-node-config/issues"
-  },
-  "homepage": "https://github.com/seprich/bs-node-config#readme",
   "scripts": {
     "clean": "bsb -clean-world",
     "build": "bsb -make-world"
   },
   "peerDependencies": {
-    "bs-platform": "^5.0.6"
-  },
-  "devDependencies": {
-    "bs-platform": "^5.0.6"
+    "bs-platform": ">= 5.0.0"
   },
   "dependencies": {
     "js-yaml": "^3.13.1"
+  },
+  "devDependencies": {
+    "bs-platform": "^5.0.6"
   }
 }

@@ -43,10 +43,6 @@ module Util {
       | (_, _) => b
     };
 
-  let mergeAll: list(Js.Json.t) => Js.Json.t =
-    jsonList =>
-      Belt.List.reduce(jsonList, Js.Json.object_(Js.Dict.empty()), mergeJson);
-
   module OptionList {
     let getSome: list(option('a)) => option('a) =
       list => list -> Belt.List.keep(Belt.Option.isSome) -> Belt.List.map(Belt.Option.getExn) -> Belt.List.head;
@@ -249,8 +245,6 @@ let get: r('a) => option('a) = value => switch (value) {
 let getExn: r('a) => 'a = Belt.Result.getExn;
 
 let result: r('a) => Belt.Result.t('a, exn) = x => x;
-
-let raw: t => Belt.Result.t(Js.Json.t, exn) = x => x.value;
 
 let fetch: string => parser('a) => t => option('a) =
   (keyPath, parser, config) =>

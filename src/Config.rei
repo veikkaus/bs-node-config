@@ -29,6 +29,7 @@ let result: r('a) => Belt.Result.t('a, exn);
  */
 
 let key: string => t => t;
+let keyHasValue: string => t => bool;  /* key exists and value is other than json null */
 
 let parseBool: parser(bool);
 let parseString: parser(string);

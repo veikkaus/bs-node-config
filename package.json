@@ -1,6 +1,6 @@
 {
   "name": "@veikkaus/re-node-config",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "Node dependent reasonml config library",
   "author": "Kundi team - Veikkaus",
   "license": "MIT",

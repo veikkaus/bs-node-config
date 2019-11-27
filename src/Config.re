@@ -178,6 +178,12 @@ let key: string => t => t =
     | Error(_) => config
   };
 
+let keyHasValue: string => t => bool =
+  (keyPath, config) => switch (key(keyPath, config).value) {
+    | Ok(jsonValue) => Js.Json.classify(jsonValue) != JSONNull
+    | Error(_) => false
+  };
+
 type parser('a) = t => r('a);
 
 let typeMatch: string => option('a) => r('a) =

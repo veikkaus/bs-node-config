@@ -1,4 +1,4 @@
-[![npm](https://img.shields.io/npm/v/bs-node-config.svg)](https://www.npmjs.com/package/bs-node-config)
+[![npm](https://img.shields.io/npm/v/@veikkaus/re-node-config.svg)](https://www.npmjs.com/package/@veikkaus/re-node-config)
 
 # ReNodeConfig
 

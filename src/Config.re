@@ -252,16 +252,8 @@ let getExn: r('a) => 'a = Belt.Result.getExn;
 
 let result: r('a) => Belt.Result.t('a, exn) = x => x;
 
-let fetch: string => parser('a) => t => option('a) =
-  (keyPath, parser, config) =>
-    key(keyPath, config) |> parser |> get;
 
-let fetchExn: string => parser('a) => t => 'a =
-  (keyPath, parser, config) =>
-    key(keyPath, config) |> parser |> Belt.Result.getExn;
-
-
-let parseBoolExn: t => bool = x => x |> parseBool |> getExn;
-let parseStringExn: t => string = x => x |> parseString |> getExn;
-let parseFloatExn: t => float = x => x |> parseFloat |> getExn;
-let parseIntExn: t => int = x => x |> parseInt |> getExn;
+let getBool: string => t => bool = (keyPath, param) => key(keyPath, param) |> parseBool |> getExn;
+let getString: string => t => string = (keyPath, param) => key(keyPath, param) |> parseString |> getExn;
+let getFloat: string => t => float = (keyPath, param) => key(keyPath, param) |> parseFloat |> getExn;
+let getInt: string => t => int = (keyPath, param) => key(keyPath, param) |> parseInt |> getExn;

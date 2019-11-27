@@ -12,15 +12,15 @@ describe("Config", () => {
   it("should load default.json and have basic values available", () => {
     let config = C.loadConfig() |> C.getExn;
     Assert.equal(
-      config |> C.key("server.host") |> C.parseStringExn,
+      C.getString("server.host", config),
       "dream.beam.com"
     );
     Assert.equal(
-      config |> C.key("server.port") |> C.parseIntExn,
+      C.getInt("server.port", config),
       1234
     );
     Assert.equal(
-      config |> C.key("server.deeper.enabled") |> C.parseBoolExn,
+      C.getBool("server.deeper.enabled", config),
       false
     );
     Assert.deep_equal(
@@ -33,15 +33,15 @@ describe("Config", () => {
     Node.Process.putEnvVar("NODE_CONFIG_ENV", "profile-x");
     let config = C.loadConfig() |> C.getExn;
     Assert.equal(
-      config |> C.key("some.interesting") |> C.parseStringExn,
+      C.getString("some.interesting", config),
       "value"
     );
     Assert.equal(
-      config |> C.key("some.and") |> C.parseFloatExn,
+      C.getFloat("some.and", config),
       123.45
     );
     Assert.equal(
-      config |> C.key("some.then") |> C.parseBoolExn,
+      C.getBool("some.then", config),
       true
     );
     Assert.deep_equal(
@@ -55,11 +55,11 @@ describe("Config", () => {
     Node.Process.putEnvVar("OTHER_THINGS", "[\"pertama\", \"kedua\"]");
     let config = C.loadConfig() |> C.getExn;
     Assert.equal(
-      config |> C.key("server.host") |> C.parseStringExn,
+      C.getString("server.host", config),
       "hostus.mostus"
     );
     Assert.equal(
-      config |> C.key("server.port") |> C.parseIntExn,
+      C.getInt("server.port", config),
       1234
     );
     Assert.deep_equal(

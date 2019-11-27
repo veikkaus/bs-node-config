@@ -1,10 +1,10 @@
 {
-  "name": "bs-node-config",
-  "version": "0.1.0",
+  "name": "@veikkaus/re-node-config",
+  "version": "0.2.0",
   "description": "Node dependent reasonml config library",
   "author": "Kundi team - Veikkaus",
   "license": "MIT",
-  "repository": "github:veikkaus/bs-node-config",
+  "repository": "github:veikkaus/re-node-config",
   "keywords": [
     "config",
     "BuckleScript",

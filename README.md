@@ -1,17 +1,22 @@
-[![npm](https://img.shields.io/npm/v/@veikkaus/re-node-config.svg)](https://www.npmjs.com/package/@veikkaus/re-node-config)
-
 # ReNodeConfig
+[![npm version][npmimg]][npm]
+[![Known Vulnerabilities][snyk-image]][snyk-url]
 
 Config library for nodejs, similar to [node-config](https://github.com/lorenwest/node-config) but strongly typed with validated type parsing. No need for Js.Nullable.t shims typical when just binding to js-libs. Configuration data is a JSON Object loaded by a loader function (see below).
 
 
+# Install
+```
+npm install @veikkaus/re-node-config
+```
+And to `bsconfig.json`: `"bs-dependencies": [..., "@veikkaus/re-node-config", ...],`
+
 
 # Usage Examples
 
-
 Assuming You Write file MyConfig.re:
 ```reasonml
-module C = ReNodeConfig.Config;
+module C = VeikkausReNodeConfig.Config;
 
 /*
  * loadConfig with default options searches for .json and .yaml files from ./config/
@@ -22,7 +27,7 @@ let config: C.t = C.loadConfig() |> C.getExn;
 
 Usage in other files/modules:
 ```reasonml
-module C = ReNodeConfig.Config;
+module C = VeikkausReNodeConfig.Config;
 let config = MyConfig.config;
 
 let host: string = C.getString("server.host", config);
@@ -57,3 +62,9 @@ Function `C.loadConfig()` searches config values from following sources in follo
    2. Reads file `custom-environment-variables.{json,yaml}`, which contains ENV variable name override definitions for various config keys (this is identical to: [node-config](https://github.com/lorenwest/node-config/wiki/Environment-Variables#custom-environment-variables)), -> loads overrides from the defined env variables that are found.
    JSON parsing is attempted to the values of the env variables, enabling e.g. passing lists inside one env variable: `MYVAR='["first","second"]'`. If the attempted JSON parsing fails, the value is treated as a simple string e.g. `MYVAR2="value2"` (= simple string. note that json would need extra quotations: `"\"value2\""`)
 3. Fallback to empty config if nothing from the above exists.
+
+
+[npmimg]: https://img.shields.io/npm/v/@veikkaus/re-node-config.svg
+[npm]: https://www.npmjs.com/package/@veikkaus/re-node-config
+[snyk-image]: https://snyk.io/test/github/veikkaus/re-node-config/badge.svg
+[snyk-url]: https://snyk.io/test/github/veikkaus/re-node-config

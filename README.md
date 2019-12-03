@@ -15,7 +15,7 @@ And to `bsconfig.json`: `"bs-dependencies": [..., "@veikkaus/re-node-config", ..
 # Usage Examples
 
 Assuming You Write file MyConfig.re:
-```reasonml
+```reason
 module C = VeikkausReNodeConfig.Config;
 
 /*
@@ -26,7 +26,7 @@ let config: C.t = C.loadConfig() |> C.getExn;
 ```
 
 Usage in other files/modules:
-```reasonml
+```reason
 module C = VeikkausReNodeConfig.Config;
 let config = MyConfig.config;
 

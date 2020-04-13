@@ -1,6 +1,6 @@
 {
   "name": "@veikkaus/re-node-config",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Node dependent reasonml config library",
   "author": "Kundi team - Veikkaus",
   "license": "MIT",
@@ -24,6 +24,6 @@
   },
   "devDependencies": {
     "bs-mocha": "1.0.0",
-    "bs-platform": "5.0.6"
+    "bs-platform": "7.2.2"
   }
 }

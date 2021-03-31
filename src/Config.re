@@ -13,17 +13,17 @@ module Util {
     type schema;
 
     [@bs.deriving abstract]
-    type safeLoadOptions = {
+    type loadOptions = {
       schema: schema,
       json: bool,
     };
     [@bs.val] [@bs.module "js-yaml"] external jsonSchema: schema = "JSON_SCHEMA";
-    [@bs.val] [@bs.module "js-yaml"] external safeLoad: (string, safeLoadOptions) => Js.Json.t = "safeLoad";
+    [@bs.val] [@bs.module "js-yaml"] external load: (string, loadOptions) => Js.Json.t = "load";
   };
 
   let parseYaml: string => r(Js.Json.t) =
     rawStr =>
-      try (Belt.Result.Ok(JsYamlBind.safeLoad(rawStr, JsYamlBind.safeLoadOptions(~schema=JsYamlBind.jsonSchema, ~json=false)))) {
+      try (Belt.Result.Ok(JsYamlBind.load(rawStr, JsYamlBind.loadOptions(~schema=JsYamlBind.jsonSchema, ~json=false)))) {
         | error => Error(error)
       };
 
@@ -54,7 +54,7 @@ module Util {
       list => list -> Belt.List.keep(Belt.Option.isSome) -> Belt.List.map(Belt.Option.getExn) -> Belt.List.head;
   };
 };
-  
+
 module Loaders {
   [@bs.val] external environment: Js.Dict.t(string) = "process.env";
   [@bs.val] external processCwd: unit => string = "process.cwd";
@@ -70,7 +70,7 @@ module Loaders {
         | Some(value) => Util.parseJson(value)
         | None => emptyConfig
       };
-  
+
   let envConfigJsonLoader: loader = envParameterLoader("CONFIG_JSON");
 
   let getConfigFilePath: unit => string =

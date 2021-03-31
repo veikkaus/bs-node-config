@@ -1,6 +1,6 @@
 {
   "name": "@veikkaus/re-node-config",
-  "version": "0.3.1",
+  "version": "0.4.0",
   "description": "Node dependent reasonml config library",
   "author": "Kundi team - Veikkaus",
   "license": "MIT",
@@ -17,13 +17,13 @@
     "test": "npm run clean && npm run build && mocha ./lib/js/test/"
   },
   "peerDependencies": {
-    "bs-platform": ">= 5.0.0"
+    "bs-platform": ">= 8.0.0"
   },
   "dependencies": {
-    "js-yaml": "3.13.1"
+    "js-yaml": "4.0.0"
   },
   "devDependencies": {
     "bs-mocha": "1.0.0",
-    "bs-platform": "7.2.2"
+    "bs-platform": "9.0.2"
   }
 }

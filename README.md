@@ -1,6 +1,5 @@
 # ReNodeConfig
 [![npm version][npmimg]][npm]
-[![Known Vulnerabilities][snyk-image]][snyk-url]
 
 Config library for nodejs, similar to [node-config](https://github.com/lorenwest/node-config) but strongly typed with validated type parsing. No need for Js.Nullable.t shims typical when just binding to js-libs. Configuration data is a JSON Object loaded by a loader function (see below).
 
@@ -66,5 +65,3 @@ Function `C.loadConfig()` searches config values from following sources in follo
 
 [npmimg]: https://img.shields.io/npm/v/@veikkaus/re-node-config.svg
 [npm]: https://www.npmjs.com/package/@veikkaus/re-node-config
-[snyk-image]: https://snyk.io/test/github/veikkaus/re-node-config/badge.svg
-[snyk-url]: https://snyk.io/test/github/veikkaus/re-node-config

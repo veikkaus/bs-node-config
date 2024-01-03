@@ -1,5 +1,5 @@
-open BsMocha.Mocha;
-module Assert = BsMocha.Assert;
+open RescriptMocha;
+open Mocha;
 module C = Config;
 
 
@@ -25,7 +25,7 @@ describe("Config", () => {
     );
     Assert.deep_equal(
       config |> C.key("other") |> C.parseList(C.parseString) |> C.getExn,
-      ["first", "second", "third"]
+      list{"first", "second", "third"}
     );
   });
 
@@ -46,7 +46,7 @@ describe("Config", () => {
     );
     Assert.deep_equal(
       config |> C.key("other") |> C.parseList(C.parseString) |> C.getExn,
-      ["foo", "barf", "garh"]
+      list{"foo", "barf", "garh"}
     );
   });
 
@@ -64,7 +64,7 @@ describe("Config", () => {
     );
     Assert.deep_equal(
       config |> C.key("other") |> C.parseList(C.parseString) |> C.getExn,
-      ["pertama", "kedua"]
+      list{"pertama", "kedua"}
     );
   });
 

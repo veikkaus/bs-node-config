@@ -1,29 +1,30 @@
 {
-  "name": "@veikkaus/re-node-config",
-  "version": "0.4.1",
+  "name": "@veikkaus/rescript-node-config",
+  "version": "0.5.0",
   "description": "Node dependent reasonml config library",
   "author": "Kundi team - Veikkaus",
   "license": "MIT",
   "repository": "github:veikkaus/re-node-config",
   "keywords": [
     "config",
-    "BuckleScript",
-    "Reason",
+    "rescript",
     "nodejs"
   ],
   "scripts": {
-    "clean": "bsb -clean-world",
-    "build": "bsb -make-world",
-    "test": "npm run clean && npm run build && mocha ./lib/js/test/"
+    "res:clean": "rescript clean",
+    "res:build": "rescript",
+    "res:test": "rescript clean && rescript && mocha ./lib/js/test/"
   },
   "peerDependencies": {
-    "bs-platform": ">= 8.0.0"
+    "rescript": ">= 10.0"
   },
   "dependencies": {
-    "js-yaml": "4.0.0"
+    "@rescript/core": "^0.6.0",
+    "js-yaml": "4.1.0"
   },
   "devDependencies": {
-    "bs-mocha": "1.0.0",
-    "bs-platform": "9.0.2"
+    "mocha": "^10.2.0",
+    "rescript": "10.1",
+    "rescript-mocha": "^0.9.0"
   }
 }

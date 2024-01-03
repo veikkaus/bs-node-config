@@ -1,21 +1,22 @@
 # ReNodeConfig
 [![npm version][npmimg]][npm]
+![ci tests](https://github.com/veikkaus/re-node-config/actions/workflows/tests.yml/badge.svg)
 
 Config library for nodejs, similar to [node-config](https://github.com/lorenwest/node-config) but strongly typed with validated type parsing. No need for Js.Nullable.t shims typical when just binding to js-libs. Configuration data is a JSON Object loaded by a loader function (see below).
 
 
 # Install
 ```
-npm install @veikkaus/re-node-config
+npm install @veikkaus/rescript-node-config
 ```
-And to `bsconfig.json`: `"bs-dependencies": [..., "@veikkaus/re-node-config", ...],`
+And to `bsconfig.json`: `"bs-dependencies": [..., "@veikkaus/rescript-node-config", ...],`
 
 
 # Usage Examples
 
-Assuming You Write file MyConfig.re:
-```reason
-module C = VeikkausReNodeConfig.Config;
+Assuming You Write file MyConfig.res:
+```rescript
+module C = VeikkausRescriptNodeConfig.Config;
 
 /*
  * loadConfig with default options searches for .json and .yaml files from ./config/
@@ -25,8 +26,8 @@ let config: C.t = C.loadConfig() |> C.getExn;
 ```
 
 Usage in other files/modules:
-```reason
-module C = VeikkausReNodeConfig.Config;
+```rescript
+module C = VeikkausRescriptNodeConfig.Config;
 let config = MyConfig.config;
 
 let host: string = C.getString("server.host", config);
@@ -39,7 +40,7 @@ let port: int = C.getInt("server.port", config);
  */
 
 /* Parsing lists of values is fairly simple too: */
-let myList: list(string) = config |> C.key("listOfWords") |> C.parseList(C.parseString) |> C.getExn;
+let myList: list<string> = config |> C.key("listOfWords") |> C.parseList(C.parseString) |> C.getExn;
 
 
 /* Finally providing that you implement a parser from json to your own type: */
@@ -63,5 +64,5 @@ Function `C.loadConfig()` searches config values from following sources in follo
 3. Fallback to empty config if nothing from the above exists.
 
 
-[npmimg]: https://img.shields.io/npm/v/@veikkaus/re-node-config.svg
-[npm]: https://www.npmjs.com/package/@veikkaus/re-node-config
+[npmimg]: https://img.shields.io/npm/v/@veikkaus/rescript-node-config.svg
+[npm]: https://www.npmjs.com/package/@veikkaus/rescript-node-config

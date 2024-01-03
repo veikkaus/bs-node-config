@@ -2,8 +2,8 @@ exception MissingKey(string);
 exception TypeMismatch(string);
 
 type t;
-type r('a);
-type parser('a) = t => r('a);
+type r<'a>;
+type parser<'a> = t => r<'a>;
 
 /* 
  * Loading config
@@ -12,11 +12,11 @@ type parser('a) = t => r('a);
  * let config: Config.t = Config.loadConfig() |> Config.getExn;
  */
 
-let loadConfig: unit => r(t);
+let loadConfig: unit => r<t>;
 
-let get: r('a) => option('a);
-let getExn: r('a) => 'a;
-let result: r('a) => Belt.Result.t('a, exn);
+let get: r<'a> => option<'a>;
+let getExn: r<'a> => 'a;
+let result: r<'a> => Belt.Result.t<'a, exn>;
 
 /*
  * Core operations: traversing configuration with key() function and extracting values
@@ -31,14 +31,14 @@ let result: r('a) => Belt.Result.t('a, exn);
 let key: string => t => t;
 let keyHasValue: string => t => bool;  /* key exists and value is other than json null */
 
-let parseBool: parser(bool);
-let parseString: parser(string);
-let parseFloat: parser(float);
-let parseInt: parser(int);
+let parseBool: parser<bool>;
+let parseString: parser<string>;
+let parseFloat: parser<float>;
+let parseInt: parser<int>;
 
-let parseList: parser('a) => parser(list('a));
-let parseDict: parser('a) => parser(Js.Dict.t('a));
-let parseCustom: (Js.Json.t => 'a) => parser('a);
+let parseList: parser<'a> => parser<list<'a>>;
+let parseDict: parser<'a> => parser<Js.Dict.t<'a>>;
+let parseCustom: (Js.Json.t => 'a) => parser<'a>;
 
 /*
  * Simplified API for common cases.

@@ -1,6 +1,6 @@
 {
-  "name": "@veikkaus/re-node-config",
-  "version": "0.3.0",
+  "name": "@veikkaus/rescript-node-config",
+  "version": "0.5.0",
   "sources": [
     {
       "dir" : "src",
@@ -16,13 +16,14 @@
     "in-source": false
   },
   "suffix": ".bs.js",
-  "bs-dependencies": [],
+  "bs-dependencies": [
+    "@rescript/core"
+  ],
   "bs-dev-dependencies": [
-    "bs-mocha"
+    "rescript-mocha"
   ],
   "warnings": {
     "error" : "+101"
   },
-  "namespace": true,
-  "refmt": 3
+  "namespace": true
 }

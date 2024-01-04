@@ -4,7 +4,10 @@
   "description": "Node dependent reasonml config library",
   "author": "Kundi team - Veikkaus",
   "license": "MIT",
-  "repository": "github:veikkaus/re-node-config",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/veikkaus/rescript-node-config.git"
+  },
   "keywords": [
     "config",
     "rescript",

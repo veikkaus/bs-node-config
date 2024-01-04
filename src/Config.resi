@@ -41,7 +41,7 @@ let parseDict: t => parser<'a> => r<Js.Dict.t<'a>>;
 let parseCustom: t => (Js.Json.t => 'a) => r<'a>;
 
 /*
- * Simplified API for common cases.
+ * Simplified API for common cases. On error throws.
  * 
  * Usage example:
  * let hostName: string = Config.getString(config, "server.host");
@@ -51,3 +51,6 @@ let getBool: t => string => bool;
 let getString: t => string => string;
 let getFloat: t => string => float;
 let getInt: t => string => int;
+
+let getList: t => string => parser<'a> => list<'a>
+let getDict: t => string => parser<'a> => Js.Dict.t<'a>;

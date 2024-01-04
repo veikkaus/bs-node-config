@@ -34,26 +34,19 @@ let host: string = C.getString(config, "server.host");
 let port: int = C.getInt(config, "server.port");
 let flag: bool = C.getBool(config, "featureX");
 let factorZ: float = C.getFloat(config, "z.factor");
+let strList: list<string> = C.getList(config, "example.abc", C.parseString);
+let intDict: Js.Dict.t<int> = C.getDict(config, "example.def", C.parseInt);
 
-
-/* `getString` is actually a convenience function which combines the following detailed functionality:
- *   getString =
- *     (path, config) => config     // The whole configuration
- *       ->C.key("server.host")     // Select this sub-branch configuration
- *       ->C.parseString            // Parse current selection value as a string -> result
- *       ->C.getExn;                // Get value of result or throw exception
- *                                     (MissingKey or TypeMismatch)
+/* Functions above are convenience functions combining a couple of other functions in this library.
+ * These `get*` functions will throw errors if configuration value is not found or is not expected type.
+ * If you wish to handle errors differently it is possible to extract the configuration value as Belt.Result.t
  */
 
-/* Parsing lists of values is fairly simple too: */
-let myList: list<string> = config ->C.key("listOfWords") ->C.parseList(C.parseString) ->C.getExn;
-/* Notice that parseList takes item parser for parsing each item in the list. */
+/* Custom parsing is also supported. This can be useful for mapping heterogenous configuration objects into rescript object types */
+type student;
+let myParser: Js.Json.t => student;     /* This you need to provide. Throws errors if cannot convert. */
 
-/* Custom parsing is also supported: */
-type foo;
-let myJsonToFoo: Js.Json.t => foo;     /* May throw on parsing errors */
-/* then that can be used to turn complicated object on your config into your custom type: */
-let myFoo: foo = config |> C.key("foo") |> C.parseCustom(myJsonToFoo) |> C.getExn;
+let confStudent: student = config -> C.key("example.x") -> C.parseCustom(myParser) -> C.getExn;
 ```
 See `src/Config.resi` for full list of config value getters.
 

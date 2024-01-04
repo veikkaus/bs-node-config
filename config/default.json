@@ -10,5 +10,12 @@
     "first",
     "second",
     "third"
-  ]
+  ],
+  "numberDict": {
+    "first": 123,
+    "second": 456,
+    "third": 0,
+    "fourth": -234,
+    "fifth": 93
+  }
 }

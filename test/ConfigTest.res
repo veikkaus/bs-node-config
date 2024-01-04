@@ -26,6 +26,14 @@ describe("Config", () => {
       config -> C.key("other") -> C.parseList(C.parseString) -> C.getExn,
       list{"first", "second", "third"}
     );
+    Assert.deep_equal(
+      C.getList(config, "other", C.parseString),
+      list{"first", "second", "third"}
+    );
+    Assert.deep_equal(
+      C.getDict(config, "numberDict", C.parseInt),
+      Js.Dict.fromArray([("first", 123), ("second", 456), ("third", 0), ("fourth", -234), ("fifth", 93)])
+    );
   });
 
   it("should load profile-x.yaml and have basic values available", () => {

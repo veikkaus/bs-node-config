@@ -276,3 +276,8 @@ let getBool: t => string => bool = (config, keyPath) => key(config, keyPath) -> 
 let getString: t => string => string = (config, keyPath) => key(config, keyPath) -> parseString -> getExn;
 let getFloat: t => string => float = (config, keyPath) => key(config, keyPath) -> parseFloat -> getExn;
 let getInt: t => string => int = (config, keyPath) => key(config, keyPath) -> parseInt -> getExn;
+
+let getList: t => string => parser<'a> => list<'a> =
+  (config, keyPath, itemParser) => key(config, keyPath) -> parseList(itemParser) -> getExn;
+let getDict: t => string => parser<'a> => Js.Dict.t<'a> =
+  (config, keyPath, itemParser) => key(config, keyPath) -> parseDict(itemParser) -> getExn;

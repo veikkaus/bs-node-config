@@ -1,6 +1,6 @@
 # VeikkausRescriptNodeConfig
 [![npm version][npmimg]][npm]
-![ci tests](https://github.com/veikkaus/re-node-config/actions/workflows/tests.yml/badge.svg)
+![ci tests](https://github.com/veikkaus/rescript-node-config/actions/workflows/tests.yml/badge.svg)
 
 Config library for nodejs, similar to [node-config](https://github.com/lorenwest/node-config) but strongly typed with validated type parsing. No need for Js.Nullable.t shims typical when just binding to js-libs. Configuration data is a JSON Object loaded by a loader function (see below).
 

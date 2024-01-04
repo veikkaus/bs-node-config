@@ -47,8 +47,8 @@ module Util = {
           | (None, Some(v2)) => (key, v2)
           | (None, None) => (key, Js.Json.null)
         })
-        |> Js.Dict.fromArray
-        |> Js.Json.object_
+        -> Js.Dict.fromArray
+        -> Js.Json.object_
       }
       | (_, _) => b
     };
@@ -89,20 +89,20 @@ module Loaders = {
         Js.Dict.get(environment, "NODE_ENV"),
       });
 
-  let loadFileIfExists: parser => string => r<Js.Json.t> =
-    (parser, filename) => if (Node.Fs.existsSync(filename)) {
+  let loadFileIfExists: string => parser => r<Js.Json.t> =
+    (filename, parser) => if (Node.Fs.existsSync(filename)) {
       Node.Fs.readFileAsUtf8Sync(filename) -> parser
     } else {
       emptyConfig
     };
 
-  let fileLoader: parser => string => loader =
-    (parser, filename, ()) =>
-      Node.Path.join2(getConfigFilePath(), filename) |> loadFileIfExists(parser);
+  let fileLoader: string => parser => loader =
+    (filename, parser, ()) =>
+      Node.Path.join2(getConfigFilePath(), filename) -> loadFileIfExists(parser);
 
-  let profileFileLoader: parser => string => loader =
-    (parser, ext, ()) => switch (getConfigProfile()) {
-      | Some(profile) => Node.Path.join2(getConfigFilePath(), profile ++ ext) |> loadFileIfExists(parser)
+  let profileFileLoader: string => parser => loader =
+    (ext, parser, ()) => switch (getConfigProfile()) {
+      | Some(profile) => Node.Path.join2(getConfigFilePath(), profile ++ ext) -> loadFileIfExists(parser)
       | None => emptyConfig
     };
 
@@ -126,25 +126,24 @@ module Loaders = {
       | _ => json
     };
 
-  let customEnvParamsLoader: parser => string => loader =
-    (parser, ext, ()) =>
-      (Node.Path.join2(getConfigFilePath(), "custom-environment-variables" ++ ext)
-       |> loadFileIfExists(parser))
+  let customEnvParamsLoader: string => parser => loader =
+    (ext, parser, ()) =>
+      (Node.Path.join2(getConfigFilePath(), "custom-environment-variables" ++ ext) -> loadFileIfExists(parser))
       -> Belt.Result.map(substitute);
 };
 
 let loadConfig: unit => r<t> =
   () => {
     let results = list{
-      Loaders.fileLoader(Util.parseJson, "default.json")(),
-      Loaders.fileLoader(Util.parseYaml, "default.yaml")(),
-      Loaders.profileFileLoader(Util.parseJson, ".json")(),
-      Loaders.profileFileLoader(Util.parseYaml, ".yaml")(),
-      Loaders.fileLoader(Util.parseJson, "local.json")(),
-      Loaders.fileLoader(Util.parseYaml, "local.yaml")(),
+      Loaders.fileLoader("default.json", Util.parseJson)(),
+      Loaders.fileLoader("default.yaml", Util.parseYaml)(),
+      Loaders.profileFileLoader(".json", Util.parseJson)(),
+      Loaders.profileFileLoader(".yaml", Util.parseYaml)(),
+      Loaders.fileLoader("local.json", Util.parseJson)(),
+      Loaders.fileLoader("local.yaml", Util.parseYaml)(),
       Loaders.envConfigJsonLoader(),
-      Loaders.customEnvParamsLoader(Util.parseJson, ".json")(),
-      Loaders.customEnvParamsLoader(Util.parseYaml, ".yaml")(),
+      Loaders.customEnvParamsLoader(".json", Util.parseJson)(),
+      Loaders.customEnvParamsLoader(".yaml", Util.parseYaml)(),
       };
     let mergedResult = results -> Belt.List.reduce(
       Loaders.emptyConfig,
@@ -174,8 +173,8 @@ let rec pickPath: r<Js.Json.t> => string => list<string> => r<Js.Json.t> =
       );
     };
 
-let key: string => t => t =
-  (keyPath, config) => switch (config.value) {
+let key: (t, string) => t =
+  (config, keyPath) => switch (config.value) {
     | Ok(json) => ({
       name: (Js.String.length(config.name) > 0 ? config.name ++ "." ++ keyPath : keyPath),
       value: (Js.String.split(".", keyPath) -> Belt.Array.keep(s => Js.String.length(s) > 0) -> Belt.List.fromArray)
@@ -184,52 +183,52 @@ let key: string => t => t =
     | Error(_) => config
   };
 
-let keyHasValue: string => t => bool =
-  (keyPath, config) => switch (key(keyPath, config).value) {
+let keyHasValue: t => string => bool =
+  (config, keyPath) => switch (key(config, keyPath).value) {
     | Ok(jsonValue) => Js.Json.classify(jsonValue) != JSONNull
     | Error(_) => false
   };
 
 type parser<'a> = t => r<'a>;
 
-let typeMatch: string => option<'a> => r<'a> =
-  (name, param) => switch (param) {
+let decodeToResult: (Js.Json.t => option<'a>) => string => Js.Json.t => r<'a> =
+  (decoder, configName, json) => switch(decoder(json)) {
     | Some(x) => Ok(x)
-    | None => Error(TypeMismatch(name))
+    | None => Error(TypeMismatch(configName))
   };
 
 let parseBool: parser<bool> =
-  param =>
-    param.value
-    -> Belt.Result.flatMap(json => Js.Json.decodeBoolean(json) |> typeMatch(param.name));
+  config =>
+    config.value
+    -> Belt.Result.flatMap(decodeToResult(Js.Json.decodeBoolean, config.name));
 
 let parseString: parser<string> =
-  param =>
-    param.value
-    -> Belt.Result.flatMap(json => Js.Json.decodeString(json) |> typeMatch(param.name));
+  config =>
+    config.value
+    -> Belt.Result.flatMap(decodeToResult(Js.Json.decodeString, config.name));
 
 let parseFloat: parser<float> =
-  param =>
-    param.value
-    -> Belt.Result.flatMap(json => Js.Json.decodeNumber(json) |> typeMatch(param.name));
+  config =>
+    config.value
+    -> Belt.Result.flatMap(decodeToResult(Js.Json.decodeNumber, config.name));
 
 let parseInt: parser<int> =
-  param =>
-    param.value
-    -> Belt.Result.flatMap(
+  config =>
+    config.value
+    -> Belt.Result.flatMap(decodeToResult(
       json =>
-        Js.Json.decodeNumber(json)
-        -> Belt.Option.flatMap(
-          number => if (Js.Math.floor_float(number) == number) { Some(Js.Math.floor_int(number)) } else { None })
-        |> typeMatch(param.name));
+        Js.Json.decodeNumber(json) -> Belt.Option.flatMap(
+          number => if (Js.Math.floor_float(number) == number) { Some(Js.Math.floor_int(number)) } else { None }),
+      config.name
+    ));
 
-let parseList: parser<'a> => parser<list<'a>> =
-  (itemParser, param) =>
-    param.value
+let parseList: t => parser<'a> => r<list<'a>> =
+  (config, itemParser) =>
+    config.value
     -> Belt.Result.flatMap(
       json =>
-        (Js.Json.decodeArray(json) |> typeMatch(param.name))
-        -> Belt.Result.map(Array.mapi((idx, item) => itemParser({ name: param.name ++ "[" ++ string_of_int(idx) ++ "]", value: Ok(item) })))
+        decodeToResult(Js.Json.decodeArray, config.name, json)
+        -> Belt.Result.map(Array.mapi((idx, item) => itemParser({ name: config.name ++ "[" ++ string_of_int(idx) ++ "]", value: Ok(item) })))
         -> Belt.Result.flatMap(array => try {
             Ok(Array.map(Belt.Result.getExn, array))
           } catch {
@@ -237,14 +236,14 @@ let parseList: parser<'a> => parser<list<'a>> =
           })
         -> Belt.Result.map(Array.to_list));
 
-let parseDict: parser<'a> => parser<Js.Dict.t<'a>> =
-  (itemParser, param) =>
-    param.value
+let parseDict: t => parser<'a> => r<Js.Dict.t<'a>> =
+  (config, itemParser) =>
+    config.value
     -> Belt.Result.flatMap(
       json =>
-        (Js.Json.decodeObject(json) |> typeMatch(param.name))
+        decodeToResult(Js.Json.decodeObject, config.name, json)
         -> Belt.Result.map(Js.Dict.entries)
-        -> Belt.Result.map(Array.mapi((idx, (key, item)) => (key, itemParser({ name: param.name ++ "[" ++ string_of_int(idx) ++ "]", value: Ok(item) }))))
+        -> Belt.Result.map(Array.mapi((idx, (key, item)) => (key, itemParser({ name: config.name ++ "[" ++ string_of_int(idx) ++ "]", value: Ok(item) }))))
         -> Belt.Result.flatMap(array => try {
             Ok(Array.map(((key, value)) => (key, Belt.Result.getExn(value)), array))
           } catch {
@@ -252,27 +251,28 @@ let parseDict: parser<'a> => parser<Js.Dict.t<'a>> =
           })
         -> Belt.Result.map(Js.Dict.fromArray));
 
-let parseCustom: (Js.Json.t => 'a) => parser<'a> =
-  (parser, param) =>
-    param.value
+let parseCustom: t => (Js.Json.t => 'a) => r<'a> =
+  (config, customParser) =>
+    config.value
     -> Belt.Result.flatMap(
       json => try {
-          Ok(parser(json))
+          Ok(customParser(json))
         } catch {
-          | _ => Error(TypeMismatch(param.name))
+          | _ => Error(TypeMismatch(config.name))
         });
 
-let get: r<'a> => option<'a> = value => switch (value) {
-  | Ok(value) => Some(value)
-  | Error(_) => None
-};
+let get: r<'a> => option<'a> =
+  value => switch (value) {
+    | Ok(value) => Some(value)
+    | Error(_) => None
+  };
 
 let getExn: r<'a> => 'a = Belt.Result.getExn;
 
 let result: r<'a> => Belt.Result.t<'a, exn> = x => x;
 
 
-let getBool: string => t => bool = (keyPath, param) => key(keyPath, param) |> parseBool |> getExn;
-let getString: string => t => string = (keyPath, param) => key(keyPath, param) |> parseString |> getExn;
-let getFloat: string => t => float = (keyPath, param) => key(keyPath, param) |> parseFloat |> getExn;
-let getInt: string => t => int = (keyPath, param) => key(keyPath, param) |> parseInt |> getExn;
+let getBool: t => string => bool = (config, keyPath) => key(config, keyPath) -> parseBool -> getExn;
+let getString: t => string => string = (config, keyPath) => key(config, keyPath) -> parseString -> getExn;
+let getFloat: t => string => float = (config, keyPath) => key(config, keyPath) -> parseFloat -> getExn;
+let getInt: t => string => int = (config, keyPath) => key(config, keyPath) -> parseInt -> getExn;

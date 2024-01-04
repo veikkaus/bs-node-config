@@ -9,7 +9,7 @@ type parser<'a> = t => r<'a>;
  * Loading config
  * 
  * Usage example:
- * let config: Config.t = Config.loadConfig() |> Config.getExn;
+ * let config: Config.t = Config.loadConfig() ->Config.getExn;
  */
 
 let loadConfig: unit => r<t>;
@@ -22,32 +22,32 @@ let result: r<'a> => Belt.Result.t<'a, exn>;
  * Core operations: traversing configuration with key() function and extracting values
  * 
  * Usage example:
- * let nameList: list(string) =
- *   config |> Config.key("example.hosts") |> Config.parseList(Config.parseString) |> Config.getExn;
+ * let nameList: list<string> =
+ *   config ->Config.key("example.hosts") ->Config.parseList(Config.parseString) ->Config.getExn;
  * 
- * let myStruct: myStruct = config |> Config.key("deep") |> Config.parseCustom(jsonToMyStructParser) |> Config.getExn;
+ * let myStruct: myStruct = config ->Config.key("deep") ->Config.parseCustom(jsonToMyStructParser) ->Config.getExn;
  */
 
-let key: string => t => t;
-let keyHasValue: string => t => bool;  /* key exists and value is other than json null */
+let key: t => string => t;
+let keyHasValue: t => string => bool;  /* key exists and value is other than json null */
 
 let parseBool: parser<bool>;
 let parseString: parser<string>;
 let parseFloat: parser<float>;
 let parseInt: parser<int>;
 
-let parseList: parser<'a> => parser<list<'a>>;
-let parseDict: parser<'a> => parser<Js.Dict.t<'a>>;
-let parseCustom: (Js.Json.t => 'a) => parser<'a>;
+let parseList: t => parser<'a> => r<list<'a>>;
+let parseDict: t => parser<'a> => r<Js.Dict.t<'a>>;
+let parseCustom: t => (Js.Json.t => 'a) => r<'a>;
 
 /*
  * Simplified API for common cases.
  * 
  * Usage example:
- * let hostName: string = Config.getString("server.host", config);
- * let hostPort: int = Config.getInt("server.port", config);
+ * let hostName: string = Config.getString(config, "server.host");
+ * let hostPort: int = Config.getInt(config, "server.port");
  */
-let getBool: string => t => bool;
-let getString: string => t => string;
-let getFloat: string => t => float;
-let getInt: string => t => int;
+let getBool: t => string => bool;
+let getString: t => string => string;
+let getFloat: t => string => float;
+let getInt: t => string => int;

@@ -1,4 +1,4 @@
-# ReNodeConfig
+# VeikkausRescriptNodeConfig
 [![npm version][npmimg]][npm]
 ![ci tests](https://github.com/veikkaus/re-node-config/actions/workflows/tests.yml/badge.svg)
 

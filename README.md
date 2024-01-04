@@ -7,16 +7,16 @@ Config library for nodejs, similar to [node-config](https://github.com/node-conf
 
 # Install
 ```
-npm install @veikkaus/rescript-node-config
+npm install @veikkaus/node-config
 ```
-And to `bsconfig.json`: `"bs-dependencies": [..., "@veikkaus/rescript-node-config", ...],`
+And to `bsconfig.json`: `"bs-dependencies": [..., "@veikkaus/node-config", ...],`
 
 
 # Usage Examples
 
 Assuming You Write file MyConfig.res:
 ```rescript
-module C = VeikkausRescriptNodeConfig.Config;
+module C = VeikkausNodeConfig.Config;
 
 /*
  * loadConfig with default options searches for .json and .yaml files from ./config/
@@ -27,7 +27,7 @@ let config: C.t = C.loadConfig() -> C.getExn;
 
 Usage in other files/modules:
 ```rescript
-module C = VeikkausRescriptNodeConfig.Config;
+module C = VeikkausNodeConfig.Config;
 let config = MyConfig.config;
 
 let host: string = C.getString(config, "server.host");

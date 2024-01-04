@@ -1,7 +1,7 @@
 {
-  "name": "@veikkaus/rescript-node-config",
+  "name": "@veikkaus/node-config",
   "version": "0.6.0",
-  "description": "Node dependent reasonml config library",
+  "description": "Rescript configuration library for nodejs",
   "author": "Kundi team - Veikkaus",
   "license": "MIT",
   "repository": {
@@ -9,9 +9,11 @@
     "url": "git+https://github.com/veikkaus/rescript-node-config.git"
   },
   "keywords": [
-    "config",
     "rescript",
-    "nodejs"
+    "nodejs",
+    "config",
+    "nodeconfig",
+    "node-config"
   ],
   "scripts": {
     "res:clean": "rescript clean",

@@ -1,5 +1,5 @@
 {
-  "name": "@veikkaus/rescript-node-config",
+  "name": "@veikkaus/node-config",
   "version": "0.6.0",
   "sources": [
     {

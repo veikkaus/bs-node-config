@@ -1,8 +1,8 @@
-# VeikkausRescriptNodeConfig
+# VeikkausNodeConfig
 [![npm version][npmimg]][npm]
-![ci tests](https://github.com/veikkaus/rescript-node-config/actions/workflows/tests.yml/badge.svg)
+![ci tests](https://github.com/veikkaus/node-config/actions/workflows/tests.yml/badge.svg)
 
-Config library for nodejs, similar to [node-config](https://github.com/lorenwest/node-config) but strongly typed with validated type parsing. No need for Js.Nullable.t shims typical when just binding to js-libs. Configuration data is a JSON Object loaded by a loader function (see below).
+Config library for nodejs, similar to [node-config](https://github.com/node-config/node-config) but strongly typed with validated type parsing. No need for Js.Nullable.t shims typical when just binding to js-libs. Configuration data is a JSON Object loaded by a loader function (see below).
 
 
 # Install
@@ -71,5 +71,5 @@ Function `C.loadConfig()` searches config values from following sources in follo
 3. Fallback to empty config if nothing from the above exists.
 
 
-[npmimg]: https://img.shields.io/npm/v/@veikkaus/rescript-node-config.svg
-[npm]: https://www.npmjs.com/package/@veikkaus/rescript-node-config
+[npmimg]: https://img.shields.io/npm/v/@veikkaus/node-config.svg
+[npm]: https://www.npmjs.com/package/@veikkaus/node-config

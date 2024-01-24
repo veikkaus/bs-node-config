@@ -1,22 +1,22 @@
-# VeikkausNodeConfig
+# NodeConfig
 [![npm version][npmimg]][npm]
-![ci tests](https://github.com/veikkaus/node-config/actions/workflows/tests.yml/badge.svg)
+![ci tests](https://github.com/TODO)
 
 Config library for nodejs, similar to [node-config](https://github.com/node-config/node-config) but strongly typed with validated type parsing. No need for Js.Nullable.t shims typical when just binding to js-libs. Configuration data is a JSON Object loaded by a loader function (see below).
 
 
 # Install
 ```
-npm install @veikkaus/node-config
+npm install @.../node-config
 ```
-And to `bsconfig.json`: `"bs-dependencies": [..., "@veikkaus/node-config", ...],`
+And to `bsconfig.json`: `"bs-dependencies": [..., "@.../node-config", ...],`
 
 
 # Usage Examples
 
 Assuming You Write file MyConfig.res:
 ```rescript
-module C = VeikkausNodeConfig.Config;
+module C = NodeConfig.Config;
 
 /*
  * loadConfig with default options searches for .json and .yaml files from ./config/
@@ -27,7 +27,7 @@ let config: C.t = C.loadConfig() -> C.getExn;
 
 Usage in other files/modules:
 ```rescript
-module C = VeikkausNodeConfig.Config;
+module C = NodeConfig.Config;
 let config = MyConfig.config;
 
 let host: string = C.getString(config, "server.host");
@@ -64,5 +64,5 @@ Function `C.loadConfig()` searches config values from following sources in follo
 3. Fallback to empty config if nothing from the above exists.
 
 
-[npmimg]: https://img.shields.io/npm/v/@veikkaus/node-config.svg
-[npm]: https://www.npmjs.com/package/@veikkaus/node-config
+[npmimg]: https://img.shields.io/npm/v/@.../node-config.svg
+[npm]: https://www.npmjs.com/package/@.../node-config

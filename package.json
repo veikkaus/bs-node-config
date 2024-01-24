@@ -1,12 +1,12 @@
 {
-  "name": "@veikkaus/node-config",
+  "name": "node-config",
   "version": "0.6.0",
   "description": "Rescript configuration library for nodejs",
-  "author": "Kundi team - Veikkaus",
+  "author": "",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/veikkaus/rescript-node-config.git"
+    "url": ""
   },
   "keywords": [
     "rescript",
